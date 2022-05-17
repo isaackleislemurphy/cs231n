@@ -348,7 +348,7 @@ if __name__ == "__main__":
     # (N, 2048, 1, 2, 2) // relu before final dropout
     model_x3d.blocks[5].pool.post_act.register_forward_hook(get_features_x3d("emds"))
 
-    data_df = pd.read_csv("data_video.csv")
+    data_df = pd.read_csv("/home/ec2-user/data_video.csv")
 
     slowfast_emds, x3d_emds, inputs = [], [], []
 

@@ -367,7 +367,7 @@ if __name__ == "__main__":
     data_df = pd.read_csv("/home/ec2-user/data_video.csv")
     data_df = data_df.sample(data_df.shape[0], replace=False, random_state=605400).iloc[
         start_idx : start_idx + _RUN_SIZE, :
-    ]
+    ].reset_index(drop=True)
 
     slowfast_emds, x3d_emds, inputs = [], [], []
 

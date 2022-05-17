@@ -355,6 +355,7 @@ if __name__ == "__main__":
     num_batches_processed, ctr = 1, 1
 
     for i, df in tqdm(data_df.iterrows()):
+        print(f"Iter: {i}/{data_df.shape[0]}")
         try:
             # download and load video locally
             video_path = download_mp4(df["video_url"], foldername)

@@ -1,4 +1,7 @@
+"""
+"""
 import os
+import argparse
 import pickle
 import numpy as np
 import pandas as pd
@@ -308,8 +311,21 @@ def retrieve_x3d_embeddings(model, video, start_sec=0.0, max_sec=5.0):
     )
 
 
+def get_args():
+    """ """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--start_idx")
+    args = parser.parse_args()
+    return int(args.start_idx)
+
+
 if __name__ == "__main__":
-    _BATCH_SIZE = 2048
+
+    start_idx = get_args()
+    print(f"Using starting index: {start_idx}")
+
+    _RUN_SIZE = 10000
+    _BATCH_SIZE = 256
     _FEATURES_SLOWFAST = {}
     _FEATURES_X3D = {}
 
@@ -349,6 +365,9 @@ if __name__ == "__main__":
     model_x3d.blocks[5].pool.post_act.register_forward_hook(get_features_x3d("emds"))
 
     data_df = pd.read_csv("/home/ec2-user/data_video.csv")
+    data_df = data_df.sample(data_df.shape[0], replace=False, random_state=605400).iloc[
+        start_idx : start_idx + _RUN_SIZE, :
+    ]
 
     slowfast_emds, x3d_emds, inputs = [], [], []
 
@@ -386,15 +405,15 @@ if __name__ == "__main__":
             gc.collect()
 
             if ctr == _BATCH_SIZE:
-                save_pickle(np.stack(x3d_emds), f"x3d_emds_{num_batches_processed}.pkl")
+                save_pickle(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}.pkl")
                 save_pickle(
                     np.stack(slowfast_emds),
-                    f"slowfast_emds_{num_batches_processed}.pkl",
+                    f"slowfast_emds_{start_idx}_{num_batches_processed}.pkl",
                 )
-                save_pickle(np.stack(inputs), f"inputs_{num_batches_processed}.pkl")
-                save_pickle(np.stack(y), f"y_{num_batches_processed}.pkl")
-                save_pickle(np.stack(x_pitch), f"x_pitch_{num_batches_processed}.pkl")
-                save_pickle(keys, f"keys_{num_batches_processed}.pkl")
+                save_pickle(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}.pkl")
+                save_pickle(np.stack(y), f"y_{start_idx}_{num_batches_processed}.pkl")
+                save_pickle(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}.pkl")
+                save_pickle(keys, f"keys_{start_idx}_{num_batches_processed}.pkl")
 
                 num_batches_processed += 1  # increment index
                 ctr = 1  # reset counter
@@ -407,9 +426,9 @@ if __name__ == "__main__":
                 f"Failure: game_pk={df['game_pk']}, at_bat_number={df['at_bat_number']}, pitch_number={df['pitch_number']}"
             )
 
-    save_pickle(np.stack(x3d_emds), f"x3d_emds_{num_batches_processed}.pkl")
-    save_pickle(np.stack(slowfast_emds), f"slowfast_emds_{num_batches_processed}.pkl")
-    save_pickle(np.stack(inputs), f"inputs_{num_batches_processed}.pkl")
-    save_pickle(np.stack(y), f"y_{num_batches_processed}.pkl")
-    save_pickle(np.stack(x_pitch), f"x_pitch_{num_batches_processed}.pkl")
-    save_pickle(keys, f"keys_{num_batches_processed}.pkl")
+    save_pickle(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}.pkl")
+    save_pickle(np.stack(slowfast_emds), f"slowfast_emds_{start_idx}_{num_batches_processed}.pkl")
+    save_pickle(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}.pkl")
+    save_pickle(np.stack(y), f"y_{start_idx}_{num_batches_processed}.pkl")
+    save_pickle(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}.pkl")
+    save_pickle(keys, f"keys_{start_idx}_{num_batches_processed}.pkl")

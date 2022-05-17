@@ -324,8 +324,8 @@ if __name__ == "__main__":
     start_idx = get_args()
     print(f"Using starting index: {start_idx}")
 
-    _RUN_SIZE = 10000
-    _BATCH_SIZE = 256
+    _RUN_SIZE = 25000
+    _BATCH_SIZE = 50
     _FEATURES_SLOWFAST = {}
     _FEATURES_X3D = {}
 

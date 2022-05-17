@@ -325,7 +325,7 @@ if __name__ == "__main__":
     print(f"Using starting index: {start_idx}")
 
     _RUN_SIZE = 25000
-    _BATCH_SIZE = 50
+    _BATCH_SIZE = 10000
     _FEATURES_SLOWFAST = {}
     _FEATURES_X3D = {}
 
@@ -368,6 +368,7 @@ if __name__ == "__main__":
     data_df = data_df.sample(data_df.shape[0], replace=False, random_state=605400).iloc[
         start_idx : start_idx + _RUN_SIZE, :
     ].reset_index(drop=True)
+    os.remove("/home/ec2-user/data_video.csv")
 
     slowfast_emds, x3d_emds, inputs = [], [], []
 

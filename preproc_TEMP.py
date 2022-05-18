@@ -324,7 +324,7 @@ if __name__ == "__main__":
     start_idx = get_args()
     print(f"Using starting index: {start_idx}")
 
-    _RUN_SIZE = 25000
+    _RUN_SIZE = 250
     _BATCH_SIZE = 1000
     _FEATURES_SLOWFAST = {}
     _FEATURES_X3D = {}
@@ -422,7 +422,11 @@ if __name__ == "__main__":
             else:
                 ctr += 1
 
-
+            # file cleanup
+            for file in os.listdir():
+                if "mp4" in file:
+                    os.remove(file)
+                    print(" --dropping: {file}")
         except:
             print(
                 f"Failure: game_pk={df['game_pk']}, at_bat_number={df['at_bat_number']}, pitch_number={df['pitch_number']}"

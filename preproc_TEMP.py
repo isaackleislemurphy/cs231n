@@ -32,7 +32,7 @@ import wget
 import matplotlib.pyplot as plt
 
 _RUN_SIZE = 25000
-_BATCH_SIZE = 10000
+_BATCH_SIZE = 5000
 
 
 DEVICE = "cpu"

@@ -1,47 +1,4 @@
-"""
-"""
-import os
-import argparse
-import pickle
-import numpy as np
-import pandas as pd
-from datetime import datetime
-import gc
-import numbers
-import shutil
-import torch
-import json
-from tqdm import trange, tqdm
-from torchvision.transforms import Compose, Lambda
-from torchvision.transforms._transforms_video import (
-    CenterCropVideo,
-    NormalizeVideo,
-)
-from pytorchvideo.data.encoded_video import EncodedVideo
-from pytorchvideo.transforms import (
-    ApplyTransformToKey,
-    ShortSideScale,
-    UniformTemporalSubsample,
-    UniformCropVideo,
-)
-import torchvision.transforms._functional_video as F
-from typing import Dict
 
-import wget
-
-import matplotlib.pyplot as plt
-
-
-DEVICE = "cpu"
-print(f"Using device: {DEVICE}")
-DTYPE = "float32"
-
-
-FILEPATH = "drive/MyDrive/video_arsenals/"
-
-PITCH_TYPES = ["FF", "SI", "CH", "CB", "FV", "SL"]
-PITCH_INDICATORS = [f"is_{pitch_type}" for pitch_type in PITCH_TYPES]
-PITCH_FEATURES = [
     "release_speed",
     "release_pos_x",
     "release_pos_z",
@@ -80,7 +37,7 @@ def download_mp4(url, filepath=None):
     return file_name
 
 
-def save_pickle(file, filename):
+def np.savez_compressed(file, filename):
     """
     Pickles something
     """
@@ -385,15 +342,14 @@ if __name__ == "__main__":
             emd_sf_iter, _ = retrieve_slowfast_embeddings(
                 model_slowfast, video, start_sec=0.0, max_sec=5.0
             )
+            slowfast_emds.append(_FEATURES_SLOWFAST["emds"])
+
 
             emd_x3d_iter, inputs_x3d_iter = retrieve_x3d_embeddings(
                 model_x3d, video, start_sec=0.0, max_sec=5.0
             )
-
-            # update things we're tracking
-            slowfast_emds.append(_FEATURES_SLOWFAST["emds"])
             x3d_emds.append(_FEATURES_X3D["emds"])
-            inputs.append(inputs_x3d_iter)
+            # inputs.append(inputs_x3d_iter)
 
             # gather pitch features
             x_pitch.append(torch.tensor(df[FEATURES].values.astype(DTYPE)))
@@ -406,15 +362,15 @@ if __name__ == "__main__":
             gc.collect()
 
             if ctr == _BATCH_SIZE:
-                save_pickle(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}.pkl")
-                save_pickle(
+                np.savez_compressed(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}")
+                np.savez_compressed(
                     np.stack(slowfast_emds),
-                    f"slowfast_emds_{start_idx}_{num_batches_processed}.pkl",
+                    f"slowfast_emds_{start_idx}_{num_batches_processed}",
                 )
-                save_pickle(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}.pkl")
-                save_pickle(np.stack(y), f"y_{start_idx}_{num_batches_processed}.pkl")
-                save_pickle(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}.pkl")
-                save_pickle(keys, f"keys_{start_idx}_{num_batches_processed}.pkl")
+                # np.savez_compressed(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}")
+                np.savez_compressed(np.stack(y), f"y_{start_idx}_{num_batches_processed}")
+                np.savez_compressed(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}")
+                np.savez_compressed(keys, f"keys_{start_idx}_{num_batches_processed}")
 
                 num_batches_processed += 1  # increment index
                 ctr = 1  # reset counter
@@ -422,14 +378,16 @@ if __name__ == "__main__":
                 inputs, y, x_pitch, keys = [], [], [], []
             else:
                 ctr += 1
+
+
         except:
             print(
                 f"Failure: game_pk={df['game_pk']}, at_bat_number={df['at_bat_number']}, pitch_number={df['pitch_number']}"
             )
 
-    save_pickle(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}.pkl")
-    save_pickle(np.stack(slowfast_emds), f"slowfast_emds_{start_idx}_{num_batches_processed}.pkl")
-    save_pickle(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}.pkl")
-    save_pickle(np.stack(y), f"y_{start_idx}_{num_batches_processed}.pkl")
-    save_pickle(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}.pkl")
-    save_pickle(keys, f"keys_{start_idx}_{num_batches_processed}.pkl")
+    np.savez_compressed(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(np.stack(slowfast_emds), f"slowfast_emds_{start_idx}_{num_batches_processed}")
+    # np.savez_compressed(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(np.stack(y), f"y_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(keys, f"keys_{start_idx}_{num_batches_processed}")

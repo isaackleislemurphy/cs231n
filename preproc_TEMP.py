@@ -1,4 +1,47 @@
+"""
+"""
+import os
+import argparse
+import pickle
+import numpy as np
+import pandas as pd
+from datetime import datetime
+import gc
+import numbers
+import shutil
+import torch
+import json
+from tqdm import trange, tqdm
+from torchvision.transforms import Compose, Lambda
+from torchvision.transforms._transforms_video import (
+    CenterCropVideo,
+    NormalizeVideo,
+)
+from pytorchvideo.data.encoded_video import EncodedVideo
+from pytorchvideo.transforms import (
+    ApplyTransformToKey,
+    ShortSideScale,
+    UniformTemporalSubsample,
+    UniformCropVideo,
+)
+import torchvision.transforms._functional_video as F
+from typing import Dict
 
+import wget
+
+import matplotlib.pyplot as plt
+
+
+DEVICE = "cpu"
+print(f"Using device: {DEVICE}")
+DTYPE = "float32"
+
+
+FILEPATH = "drive/MyDrive/video_arsenals/"
+
+PITCH_TYPES = ["FF", "SI", "CH", "CB", "FV", "SL"]
+PITCH_INDICATORS = [f"is_{pitch_type}" for pitch_type in PITCH_TYPES]
+PITCH_FEATURES = [
     "release_speed",
     "release_pos_x",
     "release_pos_z",

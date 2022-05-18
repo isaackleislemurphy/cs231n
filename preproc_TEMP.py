@@ -31,6 +31,9 @@ import wget
 
 import matplotlib.pyplot as plt
 
+_RUN_SIZE = 5
+_BATCH_SIZE = 1000
+
 
 DEVICE = "cpu"
 print(f"Using device: {DEVICE}")
@@ -324,8 +327,6 @@ if __name__ == "__main__":
     start_idx = get_args()
     print(f"Using starting index: {start_idx}")
 
-    _RUN_SIZE = 250
-    _BATCH_SIZE = 1000
     _FEATURES_SLOWFAST = {}
     _FEATURES_X3D = {}
 

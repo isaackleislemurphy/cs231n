@@ -80,7 +80,7 @@ def download_mp4(url, filepath=None):
     return file_name
 
 
-def np.savez_compressed(file, filename):
+def save_pickle(file, filename):
     """
     Pickles something
     """

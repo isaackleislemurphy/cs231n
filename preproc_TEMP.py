@@ -405,15 +405,12 @@ if __name__ == "__main__":
             gc.collect()
 
             if ctr == _BATCH_SIZE:
-                np.savez_compressed(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}")
-                np.savez_compressed(
-                    np.stack(slowfast_emds),
-                    f"slowfast_emds_{start_idx}_{num_batches_processed}",
-                )
+                np.savez_compressed(f"x3d_emds_{start_idx}_{num_batches_processed}", np.stack(x3d_emds), )
+                np.savez_compressed(f"slowfast_emds_{start_idx}_{num_batches_processed}", np.stack(slowfast_emds), )
                 # np.savez_compressed(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}")
-                np.savez_compressed(np.stack(y), f"y_{start_idx}_{num_batches_processed}")
-                np.savez_compressed(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}")
-                np.savez_compressed(keys, f"keys_{start_idx}_{num_batches_processed}")
+                np.savez_compressed(f"y_{start_idx}_{num_batches_processed}", np.stack(y), )
+                np.savez_compressed(f"x_pitch_{start_idx}_{num_batches_processed}", np.stack(x_pitch), )
+                np.savez_compressed(f"keys_{start_idx}_{num_batches_processed}", keys,)
 
                 num_batches_processed += 1  # increment index
                 ctr = 1  # reset counter
@@ -432,9 +429,9 @@ if __name__ == "__main__":
                 f"Failure: game_pk={df['game_pk']}, at_bat_number={df['at_bat_number']}, pitch_number={df['pitch_number']}"
             )
 
-    np.savez_compressed(np.stack(x3d_emds), f"x3d_emds_{start_idx}_{num_batches_processed}")
-    np.savez_compressed(np.stack(slowfast_emds), f"slowfast_emds_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(f"x3d_emds_{start_idx}_{num_batches_processed}", np.stack(x3d_emds), )
+    np.savez_compressed(f"slowfast_emds_{start_idx}_{num_batches_processed}", np.stack(slowfast_emds), )
     # np.savez_compressed(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}")
-    np.savez_compressed(np.stack(y), f"y_{start_idx}_{num_batches_processed}")
-    np.savez_compressed(np.stack(x_pitch), f"x_pitch_{start_idx}_{num_batches_processed}")
-    np.savez_compressed(keys, f"keys_{start_idx}_{num_batches_processed}")
+    np.savez_compressed(f"y_{start_idx}_{num_batches_processed}", np.stack(y), )
+    np.savez_compressed(f"x_pitch_{start_idx}_{num_batches_processed}", np.stack(x_pitch), )
+    np.savez_compressed(f"keys_{start_idx}_{num_batches_processed}", keys,)

@@ -31,8 +31,8 @@ import wget
 
 import matplotlib.pyplot as plt
 
-_RUN_SIZE = 25000
-_BATCH_SIZE = 5000
+_RUN_SIZE = 50000
+_BATCH_SIZE = 2500
 
 
 DEVICE = "cpu"
@@ -406,6 +406,9 @@ if __name__ == "__main__":
             gc.collect()
 
             if ctr == _BATCH_SIZE:
+                print("*" * 50)
+                print("SAVING BATCH: {num_batches_processed}")
+                print("*" * 50)
                 np.savez_compressed(f"x3d_emds_{start_idx}_{num_batches_processed}", np.stack(x3d_emds), )
                 np.savez_compressed(f"slowfast_emds_{start_idx}_{num_batches_processed}", np.stack(slowfast_emds), )
                 # np.savez_compressed(np.stack(inputs), f"inputs_{start_idx}_{num_batches_processed}")

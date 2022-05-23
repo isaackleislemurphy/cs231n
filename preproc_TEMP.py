@@ -420,6 +420,7 @@ if __name__ == "__main__":
                 ctr = 1  # reset counter
 
                 inputs, y, x_pitch, keys = [], [], [], []
+                slowfast_emds, x3d_emds = [], []
             else:
                 ctr += 1
 
